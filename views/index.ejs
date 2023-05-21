@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container py-5">
+      <form action="/" method="post" class="border d-flex p-3 gap-1">
+        <input
+          type="text"
+          name="fullUrl"
+          class="form-control"
+          placeholder="Paste your link here"
+        />
+        <button class="btn btn-primary w-25">Short</button>
+      </form>
+
+      <table class="table table-borderd table-striped mt-5">
+        <thead>
+          <tr>
+            <th>Full Url</th>
+            <th>Short Url</th>
+            <th>Clicks</th>
+            <th>Controls</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shortUrls.forEach((shortUrl) => {%>
+          <tr>
+            <td>
+              <a href="<%= shortUrl.fullUrl %>"> <%= shortUrl.fullUrl %> </a>
+            </td>
+            <td>
+              <a id="shortUrl" href="/<%= shortUrl.shortUrl %>" target="_blank">
+                <%= shortUrl.shortUrl %>
+              </a>
+            </td>
+            <td><%= shortUrl.clicks %></td>
+            <td class="d-flex gap-1">
+              <form action="/<%= shortUrl.shortUrl %>" method="post">
+                <button class="btn btn-danger btn-sm">
+                  <i class="bi-trash"></i>
+                </button>
+              </form>
+              <button onclick="copyToClipboard()" class="btn btn-info btn-sm">
+                <i class="bi-clipboard-check text-white"></i>
+              </button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      const copyToClipboard = () => {
+        const url =
+          "http://localhost:5000/" +
+          document.querySelector("#shortUrl").textContent.trim();
+
+        navigator.clipboard.writeText(url).then(() => {
+          alert("copied to clipboard");
+        });
+      };
+    </script>
+  </body>
+</html>
